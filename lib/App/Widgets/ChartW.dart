@@ -12,12 +12,19 @@ class ChartW extends StatefulWidget {
 
 class _ChartWState extends State<ChartW> {
   List<Color> containerColors = [];
+  List<double> values1 = [];
+  List<double> values2 = [];
 
   @override
   void initState() {
     super.initState();
-    containerColors =
-        List<Color>.filled(widget.values.length, HexColor("#2A3645"));
+
+    final List<double> values = widget.values;
+
+    values1 = values.sublist(0, 5); // Updated to have 5 values
+    values2 = values.sublist(5); // Updated to have remaining values
+
+    containerColors = List<Color>.filled(values.length, HexColor("#2A3645"));
   }
 
   void changeContainerColor(int index) {
@@ -52,7 +59,7 @@ class _ChartWState extends State<ChartW> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(widget.values.length, (index) {
+              children: List.generate(values1.length, (index) {
                 return GestureDetector(
                   onTap: () {
                     changeContainerColor(index);
@@ -61,7 +68,7 @@ class _ChartWState extends State<ChartW> {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
                       width: 15,
-                      height: widget.values[index],
+                      height: values1[index],
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -82,6 +89,10 @@ class _ChartWState extends State<ChartW> {
               }),
             ),
           ),
+
+          ///
+          ///
+          ///
           Container(
             width: double.infinity,
             height: 10,
@@ -96,34 +107,31 @@ class _ChartWState extends State<ChartW> {
               ],
             ),
           ),
+
+          ///
+          ///
+          ///
           Padding(
             padding: const EdgeInsets.only(right: 145),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(widget.values.length - 1, (index) {
+              children: List.generate(values2.length, (index) {
                 return GestureDetector(
                   onTap: () {
-                    changeContainerColor(index);
+                    changeContainerColor(index + values1.length);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Container(
-                      width: 15,
-                      height: widget.values[index],
-                      decoration: BoxDecoration(
-                        color: containerColors[index],
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(3, 6), //(x,y)
-                            blurRadius: 6.0,
-                          ),
-                        ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                      child: Container(
+                        width: 15,
+                        height: values2[index],
+                        color: containerColors[index + values1.length],
                       ),
                     ),
                   ),

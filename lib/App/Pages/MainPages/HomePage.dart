@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 50,
           ),
-          ChartW(values: [20, 50, 80, 30, 60]),
+          ChartW(values: [20, 50, 50, 30, 60, 20, 50, 50, 50]),
         ],
       ),
     );
